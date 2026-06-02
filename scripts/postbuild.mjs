@@ -38,7 +38,7 @@ const cssLinks = cssFiles
 
 // Minimal TSR bootstrap: tells TanStack Start's hydrate() that there's no
 // server-dehydrated state, so the router falls through to CSR.
-const tsrBootstrap = `<script>window.$_TSR={buffer:[],router:{matches:[],manifest:undefined,dehydratedData:undefined}};<\/script>`;
+const tsrBootstrap = `<script>window.$_TSR={buffer:[],h:function(){},router:{matches:[],manifest:undefined,dehydratedData:undefined}};<\/script>`;
 
 const html = `<!DOCTYPE html>
 <html lang="en">
