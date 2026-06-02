@@ -30,11 +30,17 @@ const Cell = ({ value, label }: { value: number; label: string }) => (
 );
 
 export function Countdown() {
-  const [t, setT] = useState(getRemaining());
+  const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    setMounted(true);
+    setT(getRemaining());
     const i = setInterval(() => setT(getRemaining()), 1000);
     return () => clearInterval(i);
   }, []);
+  if (!mounted) {
+    return <div className="h-[140px] sm:h-[180px]" aria-hidden />;
+  }
   return (
     <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
       <Cell value={t.d} label="Days" />
