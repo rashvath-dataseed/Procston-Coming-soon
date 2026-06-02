@@ -78,10 +78,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Procston — AI-Powered Procurement Intelligence" },
-      { name: "description", content: "AI-driven procurement intelligence, supplier insights, and enterprise data automation — all in one platform. Coming soon." },
+      {
+        name: "description",
+        content:
+          "AI-driven procurement intelligence, supplier insights, and enterprise data automation — all in one platform. Coming soon.",
+      },
       { name: "author", content: "Procston" },
       { property: "og:title", content: "Procston — AI-Powered Procurement Intelligence" },
-      { property: "og:description", content: "AI-driven procurement intelligence, supplier insights, and enterprise data automation — all in one platform." },
+      {
+        property: "og:description",
+        content:
+          "AI-driven procurement intelligence, supplier insights, and enterprise data automation — all in one platform.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Procston" },
@@ -93,7 +101,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,

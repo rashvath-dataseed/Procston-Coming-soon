@@ -152,13 +152,13 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 }
 
 @layer utilities {
-  .font-display { font-family: "Plus Jakarta Sans", "Inter", sans-serif; letter-spacing: -0.02em; }
+  .font-display { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.02em; }
   .text-gradient-green {
     background: var(--gradient-green);
     -webkit-background-clip: text;

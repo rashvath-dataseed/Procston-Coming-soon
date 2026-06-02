@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { Sparkles } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import logoAsset from "@/assets/procston-logo.png.asset.json";
+import bgImage from "@/assets/bg.jpg";
 import { Particles } from "@/components/procston/Particles";
 import { Countdown } from "@/components/procston/Countdown";
-import { Waitlist } from "@/components/procston/Waitlist";
+// import { Waitlist } from "@/components/procston/Waitlist";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,21 +22,112 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+function AnimatedText({
+  text,
+  className,
+  baseDelay,
+}: {
+  text: string;
+  className?: string;
+  baseDelay: number;
+}) {
+  return (
+    <span className={`inline-flex flex-wrap ${className ?? ""}`} aria-label={text}>
+      {text.split("").map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 32, rotateX: -60, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
+          transition={{
+            duration: 0.55,
+            delay: baseDelay + i * 0.045,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{ display: "inline-block", transformOrigin: "bottom center" }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
 function Index() {
+  const [animKey, setAnimKey] = useState(0);
+  useEffect(() => {
+    setAnimKey((k) => k + 1);
+  }, []);
+
+  const cursorX = useMotionValue(-200);
+  const cursorY = useMotionValue(-200);
+  const springX = useSpring(cursorX, { stiffness: 120, damping: 20 });
+  const springY = useSpring(cursorY, { stiffness: 120, damping: 20 });
+
+  const orbLeftX = useMotionValue(0);
+  const orbLeftY = useMotionValue(0);
+  const orbRightX = useMotionValue(0);
+  const orbRightY = useMotionValue(0);
+
+  const springOrbLX = useSpring(orbLeftX, { stiffness: 40, damping: 18 });
+  const springOrbLY = useSpring(orbLeftY, { stiffness: 40, damping: 18 });
+  const springOrbRX = useSpring(orbRightX, { stiffness: 30, damping: 16 });
+  const springOrbRY = useSpring(orbRightY, { stiffness: 30, damping: 16 });
+
+  const cursorLeft = useTransform(springX, (v) => v - 128);
+  const cursorTop = useTransform(springY, (v) => v - 128);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+      const cx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const cy = (e.clientY / window.innerHeight - 0.5) * 2;
+      orbLeftX.set(cx * 30);
+      orbLeftY.set(cy * 30);
+      orbRightX.set(cx * -24);
+      orbRightY.set(cy * -24);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [cursorX, cursorY, orbLeftX, orbLeftY, orbRightX, orbRightY]);
+
   return (
     <div className="relative min-h-screen overflow-hidden mesh-bg text-foreground flex flex-col">
+      {/* video background */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-black/65" />
+      </div>
+
+      {/* cursor glow */}
+      <motion.div
+        className="pointer-events-none fixed z-50 h-64 w-64 rounded-full"
+        style={{
+          x: cursorLeft,
+          y: cursorTop,
+          background: "radial-gradient(circle, rgba(80,200,120,0.12) 0%, transparent 70%)",
+        }}
+      />
+
       <div className="pointer-events-none absolute inset-0 grid-lines" aria-hidden />
       <Particles />
 
-      {/* floating orbs */}
-      <div className="pointer-events-none absolute -left-10 top-1/4 hidden h-56 w-56 rounded-full bg-[color:var(--primary)]/20 blur-3xl animate-float md:block" />
-      <div
+      {/* floating orbs with mouse parallax */}
+      <motion.div
+        className="pointer-events-none absolute -left-10 top-1/4 hidden h-56 w-56 rounded-full bg-[color:var(--primary)]/20 blur-3xl animate-float md:block"
+        style={{ x: springOrbLX, y: springOrbLY }}
+      />
+      <motion.div
         className="pointer-events-none absolute -right-10 top-1/2 hidden h-64 w-64 rounded-full bg-[color:var(--copper)]/20 blur-3xl animate-float md:block"
-        style={{ animationDelay: "2s" }}
+        style={{ x: springOrbRX, y: springOrbRY, animationDelay: "2s" }}
       />
 
       <header className="relative z-10 flex items-center justify-center px-6 py-8">
-        <img src={logoAsset.url} alt="Procston" className="h-8 w-auto" />
+        <img
+          src="https://olive-duck-672749.hostingersite.com/wp-content/uploads/2026/05/Procston-Light.png"
+          alt="Procston"
+          className="h-8 w-auto"
+        />
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
@@ -52,16 +145,15 @@ function Index() {
           Website Launching Soon
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="mt-8 font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight"
+        <h1
+          key={animKey}
+          className="mt-8 font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight text-white"
         >
-          We're <span className="text-gradient-green">Launching</span>
+          <AnimatedText text="We're " className="text-white" baseDelay={0.15} />
+          <AnimatedText text="Launching" className="text-white" baseDelay={0.38} />
           <br />
-          <span className="text-gradient-copper">Very Soon</span>
-        </motion.h1>
+          <AnimatedText text="Very Soon" className="text-white" baseDelay={0.72} />
+        </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -90,7 +182,7 @@ function Index() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-14 w-full"
         >
-          <Waitlist />
+          {/* <Waitlist /> */}
         </motion.div>
       </main>
 
