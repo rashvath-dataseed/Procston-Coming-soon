@@ -46,6 +46,10 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+  --color-surface: var(--surface);
+  --color-copper: var(--copper);
+  --color-copper-deep: var(--copper-deep);
+  --color-soft-foreground: var(--soft-foreground);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -63,25 +67,33 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --background: oklch(0.06 0 0);
+  --surface: oklch(0.09 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.10 0.005 150 / 0.6);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.09 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.92 0.24 130);
+  --primary-foreground: oklch(0.06 0 0);
+  --secondary: oklch(0.85 0.18 155);
+  --secondary-foreground: oklch(0.06 0 0);
+  --accent: oklch(0.80 0.12 195);
+  --accent-foreground: oklch(0.06 0 0);
+  --copper: oklch(0.62 0.16 45);
+  --copper-deep: oklch(0.40 0.13 45);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --soft-foreground: oklch(0.78 0 0);
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.08);
+  --ring: oklch(0.92 0.24 130);
+  --gradient-copper: linear-gradient(135deg, oklch(0.40 0.13 45), oklch(0.62 0.16 45));
+  --gradient-green: linear-gradient(135deg, oklch(0.92 0.24 130), oklch(0.85 0.18 155));
+  --shadow-glow-green: 0 0 60px -10px oklch(0.92 0.24 130 / 0.55);
+  --shadow-glow-copper: 0 0 60px -10px oklch(0.62 0.16 45 / 0.45);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +152,55 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
+}
+
+@layer utilities {
+  .font-display { font-family: "Plus Jakarta Sans", "Inter", sans-serif; letter-spacing: -0.02em; }
+  .text-gradient-green {
+    background: var(--gradient-green);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-copper {
+    background: var(--gradient-copper);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .glass-card {
+    background: linear-gradient(180deg, oklch(1 0 0 / 0.04), oklch(1 0 0 / 0.01));
+    border: 1px solid oklch(1 0 0 / 0.08);
+    backdrop-filter: blur(14px);
+  }
+  .glow-green { box-shadow: var(--shadow-glow-green); }
+  .glow-copper { box-shadow: var(--shadow-glow-copper); }
+  .mesh-bg {
+    background:
+      radial-gradient(60% 50% at 15% 20%, oklch(0.92 0.24 130 / 0.18), transparent 60%),
+      radial-gradient(50% 40% at 85% 30%, oklch(0.80 0.12 195 / 0.14), transparent 65%),
+      radial-gradient(45% 45% at 70% 85%, oklch(0.62 0.16 45 / 0.18), transparent 65%),
+      radial-gradient(50% 40% at 20% 90%, oklch(0.85 0.18 155 / 0.10), transparent 65%),
+      var(--color-background);
+  }
+  .grid-lines {
+    background-image:
+      linear-gradient(oklch(1 0 0 / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(1 0 0 / 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 30px -5px oklch(0.92 0.24 130 / 0.4); }
+    50% { box-shadow: 0 0 60px 0px oklch(0.92 0.24 130 / 0.7); }
+  }
+  .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .animate-float { animation: float-y 6s ease-in-out infinite; }
 }
