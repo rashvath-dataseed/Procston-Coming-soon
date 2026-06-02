@@ -6,7 +6,8 @@ import logoAsset from "@/assets/procston-logo.png.asset.json";
 import bgImage from "@/assets/bg.jpg";
 import { Particles } from "@/components/procston/Particles";
 import { Countdown } from "@/components/procston/Countdown";
-// import { Waitlist } from "@/components/procston/Waitlist";
+import { Waitlist } from "@/components/procston/Waitlist";
+import TextType from "@/components/procston/TextType";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -15,42 +16,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Procston is launching soon. AI-Powered Procurement Intelligence — join the waitlist.",
+          "Procston is launching soon. Next-Generation EPC Procurement Platform — join the waitlist.",
       },
     ],
   }),
   component: Index,
 });
-
-function AnimatedText({
-  text,
-  className,
-  baseDelay,
-}: {
-  text: string;
-  className?: string;
-  baseDelay: number;
-}) {
-  return (
-    <span className={`inline-flex flex-wrap ${className ?? ""}`} aria-label={text}>
-      {text.split("").map((char, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 32, rotateX: -60, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
-          transition={{
-            duration: 0.55,
-            delay: baseDelay + i * 0.045,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ display: "inline-block", transformOrigin: "bottom center" }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
 
 function Index() {
   const [animKey, setAnimKey] = useState(0);
@@ -95,8 +66,12 @@ function Index() {
     <div className="relative min-h-screen overflow-hidden mesh-bg text-foreground flex flex-col">
       {/* video background */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/65" />
+        <img
+          src={bgImage}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-black/62" />
       </div>
 
       {/* cursor glow */}
@@ -123,11 +98,14 @@ function Index() {
       />
 
       <header className="relative z-10 flex items-center justify-center px-6 py-8">
-        <img
-          src="https://olive-duck-672749.hostingersite.com/wp-content/uploads/2026/05/Procston-Light.png"
-          alt="Procston"
-          className="h-8 w-auto"
-        />
+        <div className="relative">
+          <div className="absolute -inset-3 rounded-2xl bg-[color:var(--primary)]/10 blur-xl" />
+          <img
+            src="https://olive-duck-672749.hostingersite.com/wp-content/uploads/2026/05/Procston-Light.png"
+            alt="Procston"
+            className="relative h-9 w-auto drop-shadow-[0_0_12px_rgba(80,200,120,0.5)]"
+          />
+        </div>
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
@@ -149,10 +127,17 @@ function Index() {
           key={animKey}
           className="mt-8 font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight text-white"
         >
-          <AnimatedText text="We're " className="text-white" baseDelay={0.15} />
-          <AnimatedText text="Launching" className="text-white" baseDelay={0.38} />
-          <br />
-          <AnimatedText text="Very Soon" className="text-white" baseDelay={0.72} />
+          <TextType
+            as="span"
+            text={["We're Launching Very Soon", "Next-Gen EPC Procurement"]}
+            typingSpeed={60}
+            deletingSpeed={35}
+            pauseDuration={2000}
+            showCursor={true}
+            cursorCharacter="|"
+            cursorClassName="text-[color:var(--primary)]"
+            className="text-white"
+          />
         </h1>
 
         <motion.p
@@ -161,7 +146,7 @@ function Index() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-soft-foreground"
         >
-          AI-Powered Procurement Intelligence. Be the first to know when we go live.
+          Next-Generation EPC Procurement Platform. Be the first to know when we go live.
         </motion.p>
 
         <motion.div
@@ -170,7 +155,7 @@ function Index() {
           transition={{ duration: 0.8, delay: 0.45 }}
           className="mt-12 w-full"
         >
-          <p className="mb-5 text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted-foreground">
+          <p className="mb-5 text-[10px] sm:text-xs uppercase tracking-[0.3em] font-semibold text-[color:var(--primary)] drop-shadow-[0_0_8px_oklch(0.92_0.24_130/0.7)]">
             Launching In
           </p>
           <Countdown />
@@ -180,14 +165,14 @@ function Index() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-14 w-full"
+          className="mt-24 w-full"
         >
-          {/* <Waitlist /> */}
+          <Waitlist />
         </motion.div>
       </main>
 
       <footer className="relative z-10 px-6 py-8 text-center text-xs text-muted-foreground">
-        © 2025 Procston. All rights reserved.
+        © 2026 Procston. All rights reserved.
       </footer>
     </div>
   );

@@ -77,18 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Procston — AI-Powered Procurement Intelligence" },
+      { title: "Procston — Next-Generation EPC Procurement Platform" },
       {
         name: "description",
         content:
-          "AI-driven procurement intelligence, supplier insights, and enterprise data automation — all in one platform. Coming soon.",
+          "Next-Generation EPC Procurement Platform — smarter sourcing, supplier intelligence, and project procurement automation. Coming soon.",
       },
       { name: "author", content: "Procston" },
-      { property: "og:title", content: "Procston — AI-Powered Procurement Intelligence" },
+      { property: "og:title", content: "Procston — Next-Generation EPC Procurement Platform" },
       {
         property: "og:description",
         content:
-          "AI-driven procurement intelligence, supplier insights, and enterprise data automation — all in one platform.",
+          "Next-Generation EPC Procurement Platform — smarter sourcing, supplier intelligence, and project procurement automation.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
