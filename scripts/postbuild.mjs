@@ -36,6 +36,10 @@ const cssLinks = cssFiles
   .map((f) => `  <link rel="stylesheet" href="${base}assets/${f}" />`)
   .join("\n");
 
+// Minimal TSR bootstrap: tells TanStack Start's hydrate() that there's no
+// server-dehydrated state, so the router falls through to CSR.
+const tsrBootstrap = `<script>window.$_TSR={buffer:[],router:{matches:[],manifest:undefined,dehydratedData:undefined}};<\/script>`;
+
 const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -44,6 +48,7 @@ const html = `<!DOCTYPE html>
     <title>Procston — Next-Generation EPC Procurement Platform</title>
     <base href="${base}" />
 ${cssLinks}
+    ${tsrBootstrap}
   </head>
   <body>
     <div id="root"></div>
