@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 
-const TARGET = new Date("2026-06-08T09:00:00Z").getTime();
+const TARGET = new Date("2028-06-08T09:00:00Z").getTime();
 // target date 
 
 function getRemaining() {
